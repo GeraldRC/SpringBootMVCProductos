@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: html_head">
+</head>
+<body>
+<div th:replace="fragments :: html_nav"></div>
+<h1 class="display-4 p-3">Productos</h1>
+<hr>
+<div class="container mt-4">
+    <div class="card-columns">
+        <div class="card" th:each="producto : ${productos}">
+            <img th:src="@{'/uploads/' + ${producto.getRutaFoto()}}" class="card-img-top" th:alt="${producto.getNombre()}">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${producto.getNombre()}"></h5>
+                <p class="card-text" th:text="${producto.getMarca().getNombre()}"></p>
+                <p class="card-text"><small class="text-muted" th:text="${producto.getStock()}"></small></p>
+                <hr>
+                <a th:href="@{/productos/} + ${producto.getId()}"  class="btn btn-primary btn-block">Ver Detalle..</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments :: html_footer"></div>
+</body>
+</html>

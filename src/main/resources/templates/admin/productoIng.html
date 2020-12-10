@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: html_head">
+</head>
+<body>
+<div th:replace="fragments :: html_nav"></div>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header">
+                  <h3 class="text-center">Registro de Producto</h3>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/productos/registrar}" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" th:value="${producto.nombre}">
+                            </div>
+                            <div class="alert alert-danger" role="alert" th:if="${error != null && error.containsKey('nombre')}"
+                            th:text="${error.get('nombre')}">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label for="marca">Marca</label>
+                                <select class="form-control" name="marca" id="marca">
+                                    <option value="">Seleccione Marca</option>
+                                    <option th:each="marca : ${marcas}" th:value="${marca.getId()}" th:text="${marca.getNombre()}"></option>
+                                </select>
+                            </div>
+                            <div class="alert alert-danger" role="alert" th:if="${error != null && error.containsKey('marca')}"
+                                 th:text="${error.get('marca')}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label for="stock">Stock:</label>
+                                <input type="number" class="form-control" th:value="${producto.stock}" id="stock" name="stock">
+                            </div>
+                            <div class="alert alert-danger" role="alert" th:if="${error != null && error.containsKey('stock')}"
+                                 th:text="${error.get('stock')}">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label for="precio">Precio:</label>
+                                <input type="number" class="form-control" name="precio" id="precio" th:value="${producto.precio}">
+                            </div>
+                            <div class="alert alert-danger" role="alert" th:if="${error != null && error.containsKey('precio')}"
+                                 th:text="${error.get('precio')}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label for="imagen">Imagen:</label>
+                                <input type="file" class="form-control-file" name="imagen" id="imagen">
+                            </div>
+                            <div class="alert alert-danger" role="alert" th:if="${error != null && error.containsKey('rutaFoto')}"
+                                 th:text="${error.get('rutaFoto')}">
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <button class="btn btn-success btn-block" type="submit">Registrar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+<div th:replace="fragments :: html_footer"></div>
+</body>
+</html>

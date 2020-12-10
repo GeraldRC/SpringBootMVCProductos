@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: html_head">
+</head>
+<body>
+    <div th:replace="fragments :: html_nav"></div>
+    <div th:replace="fragments :: html_tron"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h1>Productos</h1>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <a href="/productos" class="btn btn-primary"> Ver Productos</a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h1>Busqueda de Productos</h1>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{productos/busqueda/}" method="get">
+                    <input class="form-control" type="text" placeholder="buscar" id="buscar" name="buscar">
+                    <br>
+                    <button type="submit" class="btn btn-primary ">Buscar...</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div th:replace="fragments :: html_footer"></div>
+</body>
+</html>
