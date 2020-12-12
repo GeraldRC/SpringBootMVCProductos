@@ -56,4 +56,9 @@ public class ProductoServiceImpl implements IProductoService {
     public List<Producto> findByPattern(String pattern) {
         return repo.findByNombreStartingWith(pattern);
     }
+
+    @Override
+    public List<Producto> findByMarca(String marca) {
+        return repo.findbyMarca(marca);
+    }
 }

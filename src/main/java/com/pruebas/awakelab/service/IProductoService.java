@@ -10,4 +10,5 @@ public interface IProductoService extends ICRUD<Producto>{
 
     Page<Producto> listarPageable(Pageable pageable);
     List<Producto> findByPattern(String pattern);
+    List<Producto> findByMarca(String marca);
 }

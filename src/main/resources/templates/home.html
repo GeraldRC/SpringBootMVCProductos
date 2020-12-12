@@ -24,11 +24,21 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{productos/busqueda/}" method="get">
-                    <input class="form-control" type="text" placeholder="buscar" id="buscar" name="buscar">
-                    <br>
-                    <button type="submit" class="btn btn-primary ">Buscar...</button>
-                    </form>
+                    <div>
+                        <form th:action="@{productos/busqueda/}" method="get">
+                            <input class="form-control" type="text" placeholder="buscar" id="buscar" name="buscar">
+                            <br>
+                            <button type="submit" class="btn btn-primary ">Buscar Por Nombre...</button>
+                        </form>
+                    </div>
+                    <div class="mt-2">
+                        <form th:action="@{productos/busqueda/marca/}" method="get">
+                            <input class="form-control" type="text" placeholder="buscar" id="marca" name="marca">
+                            <br>
+                            <button type="submit" class="btn btn-primary ">Buscar Por Marca...</button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </div>

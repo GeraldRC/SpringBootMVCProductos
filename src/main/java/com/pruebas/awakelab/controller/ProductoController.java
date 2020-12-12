@@ -3,6 +3,8 @@ package com.pruebas.awakelab.controller;
 import com.pruebas.awakelab.model.Producto;
 import com.pruebas.awakelab.service.IMarcaService;
 import com.pruebas.awakelab.service.IProductoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -20,10 +23,13 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/productos")
 public class ProductoController {
+
+     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private IProductoService service;
@@ -55,6 +61,14 @@ public class ProductoController {
         return "productos";
     }
 
+    @GetMapping("/busqueda/marca")
+    public String findByMarca(@RequestParam String marca, Model model){
+        List<Producto> productos = service.findByMarca(marca);
+        model.addAttribute("productos",productos);
+        model.addAttribute("titulo","Resultados Busqueda");
+        return "productos";
+    }
+
     @GetMapping("/registrar")
     public String productoModel(Model model){
         model.addAttribute("marcas",marcaService.findAll());
@@ -65,7 +79,7 @@ public class ProductoController {
 
     @PostMapping("/registrar")
     public String registrarProducto(@Valid Producto producto, BindingResult result,
-                                    @RequestParam("imagen") MultipartFile imagen, Model model){
+                                    @RequestParam("imagen") MultipartFile imagen, Model model, RedirectAttributes flash){
         if (result.hasErrors()){
             Map<String, Object> errores = new HashMap<>();
             result.getFieldErrors().forEach(fieldError -> {
@@ -76,18 +90,37 @@ public class ProductoController {
             return "admin/productoIng";
         }
         if (!imagen.isEmpty()){
-            Path directorioRecurso = Paths.get("src//main//resources//static/uploads");
-            String rootPath = directorioRecurso.toFile().getAbsolutePath();
+
+            String uniqueFileName = UUID.randomUUID().toString() + "_" + imagen.getOriginalFilename();
+            Path rootPath = Paths.get("uploads").resolve(uniqueFileName);
+            Path rootAbsolutePath = rootPath.toAbsolutePath();
+
+            log.info("rootPath :",rootPath);
+            log.info("rootAbsolutePath :",rootAbsolutePath);
+
             try {
-                byte[] bytes = imagen.getBytes();
-                Path rutaCompleta = Paths.get(rootPath + "//" + imagen.getOriginalFilename());
-                Files.write(rutaCompleta, bytes);
-                producto.setRutaFoto(imagen.getOriginalFilename());
+                Files.copy(imagen.getInputStream(),rootAbsolutePath);
+                flash.addFlashAttribute("info","Imagen Subida Correctamente" + uniqueFileName);
+                producto.setRutaFoto(uniqueFileName);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        Producto obj = service.register(producto);
-        return "redirect:/productos";
+        service.register(producto);
+        return "redirect:/productos/registrar";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable("id") Integer id , RedirectAttributes flash){
+        Producto producto = service.findById(id);
+        Map<String, Object> errores = new HashMap<>();
+
+        if (producto.getId() == null){
+            errores.put("error","El id no ha sido encontrado");
+            flash.addFlashAttribute("error",errores);
+            return "redirect:/";
+        }
+        service.delete(id);
+        return "redirect:/";
     }
 }
