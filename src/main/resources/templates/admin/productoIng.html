@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: html_head">
+<head th:replace="fragments :: html_head(titulo)">
 </head>
 <body>
-<div th:replace="fragments :: html_nav"></div>
+<div th:replace="fragments :: html_nav('Administrador')"></div>
     <div class="container mt-4">
         <div class="card">
             <div class="card-header">
                   <h3 class="text-center">Registro de Producto</h3>
             </div>
             <div class="card-body">
-                <form th:action="@{/productos/registrar}" method="post" enctype="multipart/form-data">
+                <form th:action="@{/admin/productos/registrar}" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group">

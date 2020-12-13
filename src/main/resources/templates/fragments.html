@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="html_head">
+<head th:fragment="html_head(titulo)">
     <meta charset="UTF-8">
-    <title>[[${titulo}]]</title>
+    <title th:text="${titulo}"></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
     <style>
         html {
@@ -24,14 +24,33 @@
     </style>
 </head>
 <body>
-<div class="jumbotron jumbotron-fluid" th:fragment="html_tron">
+<div class="jumbotron jumbotron-fluid" th:fragment="html_tron(titulo)">
     <div class="container">
-        <h1 class="display-4">Tienda de Juguetes</h1>
-        <p class="lead">Welcome to the store of products</p>
+        <h1 class="display-4" th:text="${titulo}"></h1>
     </div>
 </div>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="html_nav">
-    <a class="navbar-brand" href="#">Store</a>
+<div th:fragment="html_alerts">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${error != null}">
+        <strong  th:text="${error}"></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="alert alert-info alert-dismissible fade show" role="alert" th:if="${info != null}">
+        <strong  th:text="${info}"></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${success != null}">
+        <strong  th:text="${success}"></strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="html_nav(titulo)">
+    <a class="navbar-brand" href="#" th:text="${titulo}"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: html_head">
+<head th:replace="fragments :: html_head(${titulo})">
 </head>
 <body>
-<div th:replace="fragments :: html_nav"></div>
+<div th:replace="fragments :: html_nav(Store)"></div>
 <div>
     <h1 th:text="${producto.getNombre()}"></h1>
 </div>

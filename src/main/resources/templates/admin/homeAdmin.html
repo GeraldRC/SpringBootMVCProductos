@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: html_head(${titulo})">
+</head>
+<body>
+<div th:replace="fragments :: html_nav(Administrador)"></div>
+<div th:replace="fragments :: html_tron('Sistema de mantenedores')"></div>
+
+    <div class="container" mt-2>
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <div class="card">
+                    <div class="card-header">Usuarios</div>
+                    <div class="card-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae, blanditiis consequatur dolor esse inventore iusto libero nesciunt odit temporibus voluptate.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <div class="card">
+                    <div class="card-header">Productos</div>
+                    <div class="card-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae, blanditiis consequatur dolor esse inventore iusto libero nesciunt odit temporibus voluptate.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div th:replace="fragments :: html_footer"></div>
+</body>
+</html>

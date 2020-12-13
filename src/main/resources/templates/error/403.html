@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: html_head">
+<head th:replace="fragments :: html_head('403')">
 </head>
 <body>
-<div th:replace="fragments :: html_nav"></div>
-
+<div th:replace="fragments :: html_nav('Store')"></div>
+    <div class="container">
+        <img th:src="@{'/uploads/403.jpg'}" style="background-size: cover; width: 100%">
+    </div>
 <div th:replace="fragments :: html_footer"></div>
 </body>
 </html>

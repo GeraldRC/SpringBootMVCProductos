@@ -1,6 +1,5 @@
 package com.pruebas.awakelab.controller;
 
-import com.pruebas.awakelab.model.Producto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,11 @@ public class HomeController {
         return "home";
     }
 
-
+    @GetMapping("/admin")
+    public String admin(Model model){
+        model.addAttribute("titulo", "Admin" );
+        return "admin/homeAdmin";
+    }
 
 
 }

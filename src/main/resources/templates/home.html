@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: html_head">
+<head th:replace="fragments :: html_head(${titulo})">
 </head>
 <body>
-    <div th:replace="fragments :: html_nav"></div>
-    <div th:replace="fragments :: html_tron"></div>
+    <div th:replace="fragments :: html_nav(Store)"></div>
+    <div th:replace="fragments :: html_tron('Bienvenido a la tienda de juguetes')"></div>
     <div class="container">
         <div class="row">
             <div class="col">

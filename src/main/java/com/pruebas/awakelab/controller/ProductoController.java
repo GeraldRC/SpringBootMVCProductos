@@ -3,10 +3,12 @@ package com.pruebas.awakelab.controller;
 import com.pruebas.awakelab.model.Producto;
 import com.pruebas.awakelab.service.IMarcaService;
 import com.pruebas.awakelab.service.IProductoService;
+import com.pruebas.awakelab.util.paginator.PageRender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,9 +40,17 @@ public class ProductoController {
     private IMarcaService marcaService;
 
     @GetMapping
-    public String findAll(Model model, Pageable pageable){
+    public String findAll(Model model,@RequestParam(name = "page", defaultValue = "0") Integer page){
+
+        Pageable pageRequest = PageRequest.of(page,5);
+
+        Page<Producto> productos = service.listarPageable(pageRequest);
+
+        PageRender<Producto> pageRender = new PageRender<>("/productos", productos);
+
         model.addAttribute("titulo", "Productos");
-        model.addAttribute("productos", service.listarPageable(pageable));
+        model.addAttribute("productos",productos);
+        model.addAttribute("page", pageRender);
         return "productos";
     }
 
@@ -69,58 +79,5 @@ public class ProductoController {
         return "productos";
     }
 
-    @GetMapping("/registrar")
-    public String productoModel(Model model){
-        model.addAttribute("marcas",marcaService.findAll());
-        model.addAttribute("titulo", "Registro de Productos");
-        model.addAttribute("producto", new Producto());
-        return "admin/productoIng";
-    }
 
-    @PostMapping("/registrar")
-    public String registrarProducto(@Valid Producto producto, BindingResult result,
-                                    @RequestParam("imagen") MultipartFile imagen, Model model, RedirectAttributes flash){
-        if (result.hasErrors()){
-            Map<String, Object> errores = new HashMap<>();
-            result.getFieldErrors().forEach(fieldError -> {
-                errores.put(fieldError.getField(),fieldError.getDefaultMessage());
-            });
-            model.addAttribute("error", errores);
-            model.addAttribute("marcas",marcaService.findAll());
-            return "admin/productoIng";
-        }
-        if (!imagen.isEmpty()){
-
-            String uniqueFileName = UUID.randomUUID().toString() + "_" + imagen.getOriginalFilename();
-            Path rootPath = Paths.get("uploads").resolve(uniqueFileName);
-            Path rootAbsolutePath = rootPath.toAbsolutePath();
-
-            log.info("rootPath :",rootPath);
-            log.info("rootAbsolutePath :",rootAbsolutePath);
-
-            try {
-                Files.copy(imagen.getInputStream(),rootAbsolutePath);
-                flash.addFlashAttribute("info","Imagen Subida Correctamente" + uniqueFileName);
-                producto.setRutaFoto(uniqueFileName);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        service.register(producto);
-        return "redirect:/productos/registrar";
-    }
-
-    @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable("id") Integer id , RedirectAttributes flash){
-        Producto producto = service.findById(id);
-        Map<String, Object> errores = new HashMap<>();
-
-        if (producto.getId() == null){
-            errores.put("error","El id no ha sido encontrado");
-            flash.addFlashAttribute("error",errores);
-            return "redirect:/";
-        }
-        service.delete(id);
-        return "redirect:/";
-    }
 }
